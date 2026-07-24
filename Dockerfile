@@ -1,12 +1,15 @@
-FROM php:8.1-cli
+FROM php:8.1-apache
 
-# Install ekstensi database mysqli dan pdo_mysql
+# Install ekstensi database
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-WORKDIR /app
-COPY . .
+# Enable mod_rewrite untuk CodeIgniter
+RUN a2enmod rewrite
 
-EXPOSE 8080
+# Ubah DocumentRoot ke /var/www/html
+COPY . /var/www/html/
 
-# Hardcode port 8080 agar PHP pasti bisa menyala tanpa error
-CMD ["php", "-S", "0.0.0.0:8080"]
+# Berikan izin akses folder
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
