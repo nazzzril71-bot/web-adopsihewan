@@ -52,5 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['api/login'] = 'api/Auth/login'; // Mengarah ke Controller Api/Auth.php
 
 $route['default_controller'] = 'login';
+$route['pet/get_pets_json'] = 'pet/get_pets_json';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
