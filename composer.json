@@ -1,16 +1,6 @@
 {
-    "name": "adopsihewan/admin",
-    "description": "Panel admin CRUD untuk adopsihewan (PHP native + PDO MySQL)",
-    "type": "project",
-    "license": "proprietary",
     "require": {
-        "php": ">=8.1",
-        "ext-pdo": "*",
-        "ext-pdo_mysql": "*"
-    },
-    "config": {
-        "platform": {
-            "php": "8.1"
-        }
+        "php": ">=7.4",
+        "ext-mysqli": "*"
     }
 }
