@@ -8,11 +8,6 @@ class Pet extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->library('session');
-
-        // Cek apakah user sudah login
-        if (!$this->session->userdata('logged_in')) {
-            redirect('login');
-        }
     }
 
     public function index()
@@ -102,5 +97,23 @@ class Pet extends CI_Controller {
 
         $this->db->update('pets', $data, ['id' => $id]);
         redirect('pet');
+    }
+
+    // --- TAMBAHAN KHUSUS UNTUK APLIKASI ANDROID ---
+    public function get_pets_json() {
+        // Mengambil semua data dari tabel database 'pets'
+        $pets = $this->db->get('pets')->result();
+
+        // Mengemas data agar bisa dibaca oleh aplikasi Android
+        $response = [
+            'status' => true,
+            'message' => 'Berhasil mengambil data',
+            'data' => $pets
+        ];
+
+        // Mengubah data menjadi format JSON
+        $this->output
+             ->set_content_type('application/json')
+             ->set_output(json_encode($response));
     }
 }
