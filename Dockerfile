@@ -9,5 +9,10 @@ RUN a2enmod rewrite
 # Copy seluruh file project ke folder Apache
 COPY . /var/www/html/
 
-# Atur permission
+# Atur hak akses folder
 RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
+
+# Jalankan Apache menggunakan skrip resmi PHP Docker
+CMD ["apache2-foreground"]
