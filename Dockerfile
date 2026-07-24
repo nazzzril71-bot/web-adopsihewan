@@ -1,18 +1,15 @@
-FROM php:8.1-apache
+FROM php:8.1-cli
 
-# Install ekstensi database
+# Install ekstensi database mysqli dan pdo_mysql
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Enable URL rewrite untuk CodeIgniter
-RUN a2enmod rewrite
+WORKDIR /app
+COPY . .
 
-# Copy seluruh file project ke folder Apache
-COPY . /var/www/html/
+# Buat script pembuka agar variabel PORT dievaluasi dengan benar oleh Shell Linux
+RUN echo '#!/bin/sh\nexec php -S 0.0.0.0:${PORT:-8080}' > /entrypoint.sh \
+    && chmod +x /entrypoint.sh
 
-# Atur hak akses folder
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 8080
 
-EXPOSE 80
-
-# Jalankan Apache menggunakan skrip resmi PHP Docker
-CMD ["apache2-foreground"]
+ENTRYPOINT ["/entrypoint.sh"]
