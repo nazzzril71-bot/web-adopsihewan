@@ -6,5 +6,8 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 WORKDIR /app
 COPY . .
 
-# Menggunakan sh -c agar variabel $PORT terbaca dengan benar oleh Railway
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080}"]
+# Set default PORT jika variabel PORT dari Railway tidak terbaca
+ENV PORT=8080
+
+# Menggunakan Shell Form (tanpa kurung siku)
+CMD php -S 0.0.0.0:$PORT
