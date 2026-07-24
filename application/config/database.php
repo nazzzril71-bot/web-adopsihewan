@@ -73,18 +73,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$db_host = getenv('DB_HOST') ?: 'roundhouse.proxy.rlwy.net';
+$db_port = getenv('DB_PORT') ?: '51381'; // Sesuaikan port mysql Railway kamu jika bukan 3306
+$db_name = getenv('DB_NAME') ?: 'railway';
+
 $db['default'] = array(
-    'dsn'      => '',
-    'hostname' => getenv('DB_HOST') ?: 'roundhouse.proxy.rlwy.net', // Mengambil dari Variable Railway
+    'dsn'      => "mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8",
+    'hostname' => $db_host,
     'username' => getenv('DB_USER') ?: 'root',
     'password' => getenv('DB_PASSWORD') ?: 'VjAwFwTZrlTBMlcPvABAlSULyBbLZwKH',
-    'database' => getenv('DB_NAME') ?: 'railway',
+    'database' => $db_name,
     'dbdriver' => 'pdo',
     'subdriver' => 'mysql',
-    'dbport'   => getenv('DB_PORT') ?: '3306',
+    'dbport'   => $db_port,
     'dbprefix' => '',
     'pconnect' => FALSE,
-    'db_debug' => FALSE, // Ubah ke FALSE agar tidak langsung crash total jika DB gagal connect
+    'db_debug' => (ENVIRONMENT !== 'production'),
     'cache_on' => FALSE,
     'cachedir' => '',
     'char_set' => 'utf8',
