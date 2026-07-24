@@ -2,10 +2,7 @@
 providers = ['php']
 
 [php]
-version = '8.1'
-
-[build]
-cmds = []
+version = '7.4'
 
 [start]
 cmd = 'php -S 0.0.0.0:$PORT'
