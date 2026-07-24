@@ -9,9 +9,9 @@ class Dashboard extends CI_Controller {
         $this->load->database();
         $this->load->library('session');
 
-        // Cek apakah user sudah login atau belum
+        // Cek apakah user sudah login
         if (!$this->session->userdata('logged_in')) {
-            redirect('index.php/login');
+            redirect('login');
         }
     }
 

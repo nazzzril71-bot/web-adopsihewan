@@ -14,7 +14,7 @@ class Login extends CI_Controller {
     {
         // Jika sudah login, langsung arahkan ke dashboard
         if ($this->session->userdata('logged_in')) {
-            redirect('index.php/dashboard');
+            redirect('dashboard');
         }
         $this->load->view('login');
     }
@@ -27,7 +27,7 @@ class Login extends CI_Controller {
         // Panggil model untuk cek ke database
         $cek = $this->Login_model->cek_login($email, $password);
 
-        if ($cek->num_rows() > 0) {
+        if ($cek && $cek->num_rows() > 0) {
             $row = $cek->row();
             
             // Buat session login
@@ -38,17 +38,17 @@ class Login extends CI_Controller {
             $this->session->set_userdata($data_session);
 
             // Redirect ke dashboard jika berhasil
-            redirect('index.php/dashboard');
+            redirect('dashboard');
         } else {
-            // Jika gagal, kembalikan ke halaman login dengan pesan error
+            // Jika gagal, kembalikan ke halaman login
             $this->session->set_flashdata('gagal', 'Email atau Password salah!');
-            redirect('index.php/login');
+            redirect('login');
         }
     }
 
     public function logout()
     {
         $this->session->sess_destroy();
-        redirect('index.php/login');
+        redirect('login');
     }
 }

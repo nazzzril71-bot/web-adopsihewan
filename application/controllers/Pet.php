@@ -9,26 +9,23 @@ class Pet extends CI_Controller {
         $this->load->database();
         $this->load->library('session');
 
-        // Cek apakah user sudah login atau belum
+        // Cek apakah user sudah login
         if (!$this->session->userdata('logged_in')) {
-            redirect('index.php/login');
+            redirect('login');
         }
     }
 
-    // ✅ TAMPIL DATA
     public function index()
     {
         $data['pets'] = $this->db->get('pets')->result();
         $this->load->view('admin/pets/index', $data);
     }
 
-    // ✅ FORM TAMBAH
     public function create()
     {
         $this->load->view('admin/pets/create');
     }
 
-    // ✅ SIMPAN DATA + UPLOAD GAMBAR
     public function store()
     {
         $config['upload_path'] = './uploads/';
@@ -45,18 +42,17 @@ class Pet extends CI_Controller {
         }
 
         $data = [
-            'name' => $this->input->post('name'),
-            'type' => $this->input->post('type'),
-            'age' => $this->input->post('age'),
+            'name'        => $this->input->post('name'),
+            'type'        => $this->input->post('type'),
+            'age'         => $this->input->post('age'),
             'description' => $this->input->post('description'),
-            'photo' => $photo
+            'photo'       => $photo
         ];
 
         $this->db->insert('pets', $data);
-        redirect('index.php/pet');
+        redirect('pet');
     }
 
-    // ✅ HAPUS DATA + FILE GAMBAR
     public function delete($id)
     {
         $pet = $this->db->get_where('pets', ['id' => $id])->row();
@@ -66,17 +62,15 @@ class Pet extends CI_Controller {
         }
 
         $this->db->delete('pets', ['id' => $id]);
-        redirect('index.php/pet');
+        redirect('pet');
     }
 
-    // ✅ FORM EDIT
     public function edit($id)
     {
         $data['pet'] = $this->db->get_where('pets', ['id' => $id])->row();
         $this->load->view('admin/pets/edit', $data);
     }
 
-    // ✅ UPDATE DATA + OPSIONAL GANTI GAMBAR
     public function update($id)
     {
         $config['upload_path'] = './uploads/';
@@ -88,28 +82,25 @@ class Pet extends CI_Controller {
         $pet = $this->db->get_where('pets', ['id' => $id])->row();
 
         if ($this->upload->do_upload('photo')) {
-
-            // hapus gambar lama
             if ($pet && $pet->photo && file_exists('./uploads/'.$pet->photo)) {
                 unlink('./uploads/'.$pet->photo);
             }
 
             $upload = $this->upload->data();
             $photo = $upload['file_name'];
-
         } else {
-            $photo = $pet->photo; // pakai gambar lama
+            $photo = $pet ? $pet->photo : null;
         }
 
         $data = [
-            'name' => $this->input->post('name'),
-            'type' => $this->input->post('type'),
-            'age' => $this->input->post('age'),
+            'name'        => $this->input->post('name'),
+            'type'        => $this->input->post('type'),
+            'age'         => $this->input->post('age'),
             'description' => $this->input->post('description'),
-            'photo' => $photo
+            'photo'       => $photo
         ];
 
         $this->db->update('pets', $data, ['id' => $id]);
-        redirect('index.php/pet');
+        redirect('pet');
     }
 }
